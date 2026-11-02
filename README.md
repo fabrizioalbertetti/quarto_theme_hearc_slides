@@ -3,6 +3,8 @@
 Extension Quarto pour produire des slides de cours (beamer PDF + reveal.js), avec un thème
 graphique aligné sur le logo HE-Arc Ingénierie (rouge `#FF0000`, noir, fond blanc).
 
+![Exemple de diapositive du PDF généré par l'extension.](example/images/rendu-exemple-diapositive.png)
+
 Le format `theme-hearc-slides-revealjs` produit deux fichiers par présentation :
 
 | Fichier      | Usage                                                                  |
@@ -169,6 +171,7 @@ example/                     projet Quarto d'exemple qui utilise l'extension
   01-exemple.qmd             présentation d'exemple
   images/                    images SVG
     src/                     sources TikZ ; `sh images/src/build.sh` régénère les images
+    build-drawio.ps1       génère les versions éditables dans draw.io
 ```
 
 ## Développement
@@ -180,6 +183,15 @@ Après chaque modification dans `extension/`, la réinstaller puis regénérer l
 cd example
 quarto add ../extension --no-prompt
 quarto render                   # → example/_output/01-exemple.html et .pdf
+```
+
+Les fichiers `images/*.drawio.svg` conservent le rendu SVG et contiennent aussi
+un diagramme draw.io éditable : cercles, connexions, points, centroïdes et libellés
+sont des objets séparés. Après avoir régénéré les SVG depuis les sources TikZ,
+générer ou mettre à jour ces versions avec :
+
+```powershell
+pwsh -File images/src/build-drawio.ps1
 ```
 
 ## Personnalisation
