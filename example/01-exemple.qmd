@@ -66,11 +66,11 @@ sous le format dans _quarto.yml ; « ::: nonincremental » fait alors l'inverse.
 <!--
 Image : ![légende](chemin){options}. Une légende non vide est affichée sous
 l'image ; `width` est relatif à la largeur de la diapositive.
-Formats : SVG (vectoriel, à privilégier), PNG, JPG ; pas de PDF (non affiché
+Formats : SVG (vectoriel, à privilégier),.svg, JPG ; pas de PDF (non affiché
 par les navigateurs).
 -->
 
-![Un réseau de neurones à deux couches cachées.](images/reseau.drawio.svg){width=80%}
+![Un réseau de neurones à deux couches cachées.](images/reseau.svg){width=80%}
 
 <!--
 Notes de l'orateur : visibles dans la vue orateur (touche S pendant la
@@ -91,7 +91,7 @@ doit pas dépasser 100 %. Une image sans légende (![](...)) remplit la colonne.
 
 :::: columns
 ::: {.column width="55%"}
-![](images/neurone.drawio.svg)
+![](images/neurone.svg)
 :::
 
 ::: {.column width="45%"}
@@ -122,7 +122,7 @@ Les étoiles représentent les centroïdes des groupes.
 :::
 
 ::: {.column width="50%"}
-![](images/kmeans.drawio.svg){width=90%}
+![](images/kmeans.svg){width=90%}
 :::
 ::::
 
@@ -141,11 +141,11 @@ Le PDF ne garde que l'état final de chaque diapositive (ici l'image 3).
 :::: columns
 ::: {.column width="50%"}
 ::: r-stack
-![](images/kmeans.drawio.svg){.fragment .fade-out fragment-index=1}
+![](images/kmeans.svg){.fragment .fade-out fragment-index=1}
 
-![](images/kmeans-2.drawio.svg){.fragment .fade-in-then-out fragment-index=1}
+![](images/kmeans-2.svg){.fragment .fade-in-then-out fragment-index=1}
 
-![](images/kmeans-3.drawio.svg){.fragment fragment-index=2}
+![](images/kmeans-3.svg){.fragment fragment-index=2}
 :::
 :::
 
