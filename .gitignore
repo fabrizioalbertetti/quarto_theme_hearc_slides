@@ -14,7 +14,7 @@ logo-he-arc-ing.jpg
 /example/images/src/*.fdb_latexmk
 /example/images/src/*.synctex.gz
 
-# Copie locale de l'extension, installée depuis ../extension (voir README)
-/example/_extensions/
+# Copie locale de l'extension, devrait faire partie du src du projet pour la reproductibilité
+# /example/_extensions/
 
 /.luarc.json

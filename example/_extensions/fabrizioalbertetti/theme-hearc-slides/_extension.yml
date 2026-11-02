@@ -1,0 +1,36 @@
+title: Thème HE-Arc Ingénierie pour slides (beamer + slides reveal.js)
+author: Fabrizio Albertetti
+version: 2.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  # Ajouté automatiquement au projet qui installe l'extension :
+  # exporte chaque présentation en PDF (« cours.html » -> « cours.pdf »)
+  metadata:
+    project:
+      post-render:
+        - pdf-export.lua
+  formats:
+    # theme-hearc-slides-revealjs : présentation HTML (navigateur) aux couleurs HE-Arc
+    revealjs:
+      theme: hearc-ing.scss
+      template-partials:
+        - title-slide.html
+      filters:
+        - course-meta.lua
+      slide-level: 2
+      lang: fr
+      highlight-style: github
+      fig-align: center
+      # 16:9
+      width: 1280
+      height: 720
+      center: false
+      slide-number: c/t
+      show-slide-number: all
+      transition: none
+      # PDF : une page par diapositive, dans l'état final de ses animations
+      pdf-separate-fragments: false
+      include-after-body:
+        - pdf-print.html
+      format-resources:
+        - logo-he-arc-ing.jpg

@@ -1,0 +1,249 @@
+/*-- scss:defaults --*/
+
+// Thème reveal.js HE-Arc, aligné sur le logo HE-Arc Ingénierie :
+// rouge pur (#FF0000), noir, fond blanc, formes rondes.
+$hearc-red: #FF0000;
+$hearc-black: #000000;
+$hearc-gray: #6E6E6E;
+$hearc-light: #F2F2F2;
+
+$body-bg: #FFFFFF;
+$body-color: $hearc-black;
+$link-color: $hearc-red;
+$selection-bg: $hearc-red;
+
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$presentation-font-size-root: 32px;
+$presentation-heading-font: $font-family-sans-serif;
+$presentation-heading-color: $hearc-black;
+$presentation-heading-font-weight: 700;
+$presentation-heading-text-transform: none;
+$presentation-h1-font-size: 2.2em;
+$presentation-h2-font-size: 1.4em;
+$presentation-h3-font-size: 1em;
+
+$code-block-bg: $hearc-light;
+$code-block-border-color: $hearc-light;
+
+/*-- scss:rules --*/
+
+// Petite barre rouge, reprise sur les pages de titre, de section et les diapositives
+@mixin hearc-bar($width) {
+  content: "";
+  display: block;
+  width: $width;
+  height: 6px;
+  margin-bottom: 0.4em;
+  background: $hearc-red;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+// ---------------------------------------------------------------------------
+// Page de titre (title-slide.html)
+// ---------------------------------------------------------------------------
+.reveal #title-slide.hearc-title {
+  text-align: left;
+
+  .hearc-bar {
+    width: 3em;
+    height: 6px;
+    margin-bottom: 1.2em;
+    background: $hearc-red;
+  }
+  .title {
+    font-size: 2em;
+    text-align: left;
+    margin-bottom: 0.2em;
+  }
+  .subtitle {
+    color: $hearc-red;
+    font-size: 1.1em;
+    margin-top: 0;
+  }
+  .hearc-meta {
+    margin-top: 1.5em;
+    p {
+      margin: 0.1em 0;
+    }
+  }
+  .author {
+    font-weight: 700;
+  }
+  .institute,
+  .course,
+  .date {
+    color: $hearc-gray;
+    font-size: 0.75em;
+  }
+  .institute {
+    margin-bottom: 0.8em !important;
+  }
+  .hearc-logo {
+    position: absolute;
+    right: 0;
+    bottom: -1em;
+    height: 2.2em;
+    margin: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Pages de section (titres « # ») et titres des diapositives (« ## »)
+// ---------------------------------------------------------------------------
+.reveal section.level1 > h1 {
+  text-align: left;
+  &::before {
+    @include hearc-bar(1.4em);
+  }
+}
+
+.reveal .slide > h2 {
+  margin-bottom: 0.6em;
+  &::before {
+    @include hearc-bar(1.15em);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Listes : puces rondes rouges, sous-puces cerclées
+// ---------------------------------------------------------------------------
+.reveal ul,
+.reveal ul ul {
+  list-style: none;
+  > li {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      left: -0.9em;
+      top: 0.45em;
+      width: 0.42em;
+      height: 0.42em;
+      border-radius: 50%;
+      background: $hearc-red;
+    }
+  }
+  ul > li::before {
+    background: transparent;
+    border: 2px solid $hearc-red;
+    width: 0.32em;
+    height: 0.32em;
+  }
+}
+
+.reveal ol > li::marker {
+  color: $hearc-red;
+}
+
+// ---------------------------------------------------------------------------
+// Blocs (titres « ### », regroupés par course-meta.lua)
+// ---------------------------------------------------------------------------
+.reveal .hearc-block {
+  margin: 0.5em 0;
+  border-radius: 0.3em;
+  overflow: hidden;
+  background: $hearc-light;
+
+  > .hearc-block-title {
+    margin: 0;
+    padding: 0.2em 0.6em;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: $hearc-black;
+  }
+  > :not(.hearc-block-title) {
+    margin: 0;
+    padding: 0.3em 0.6em;
+  }
+  &.alert > .hearc-block-title {
+    background: $hearc-red;
+  }
+  &.example > .hearc-block-title {
+    color: $hearc-black;
+    background: $hearc-light;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Divers
+// ---------------------------------------------------------------------------
+.reveal .alert,
+.reveal strong.alert {
+  color: $hearc-red;
+}
+
+.reveal figcaption,
+.reveal .figure-caption,
+.reveal .slide p.caption {
+  color: $hearc-gray;
+  font-size: 0.7em;
+  text-align: center;
+}
+
+// Image sans largeur explicite : occupe la largeur disponible (colonne,
+// superposition r-stack...), sans dépasser en hauteur
+.reveal .slide:not(#title-slide) img:not([style*="width"]):not(.r-stretch) {
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+}
+
+.reveal .r-stack > * {
+  width: 100%;
+}
+
+// Élément de liste dont tout le texte est un fragment pas encore affiché :
+// masquer aussi la puce ou le numéro
+.reveal li:has(> .fragment:only-child:not(.visible)) {
+  visibility: hidden;
+}
+
+.reveal table {
+  font-size: 0.8em;
+  th {
+    border-bottom: 2px solid $hearc-black;
+  }
+}
+
+// Pied de page : texte libre (course.footer) | cours · classe | numéro
+.reveal .footer {
+  color: $hearc-gray;
+  font-size: 0.45em;
+  .hearc-footer-left {
+    position: absolute;
+    left: 1.5em;
+  }
+  .hearc-dot {
+    color: $hearc-red;
+  }
+}
+
+.reveal .slide-number {
+  color: $hearc-red;
+  font-weight: 700;
+  background: transparent;
+  a {
+    color: $hearc-red;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Export PDF (mode impression ?print-pdf, voir pdf-export.lua) : chaque
+// diapositive dans l'état final de ses animations
+// ---------------------------------------------------------------------------
+html.print-pdf .reveal {
+  // Fragments qui disparaissent au cours de l'animation
+  .fragment.fade-out,
+  .fragment.fade-in-then-out,
+  .fragment.current-visible {
+    display: none !important;
+  }
+  // Diapositive défilante : pas de barre de défilement (le contenu est
+  // réduit pour tenir sur la page, voir pdf-print.html)
+  .scrollable {
+    overflow: visible !important;
+  }
+}
