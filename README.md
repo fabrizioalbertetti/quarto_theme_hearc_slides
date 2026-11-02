@@ -21,7 +21,7 @@ Le format `theme-hearc-revealjs` produit deux fichiers par présentation :
 Dans le dépôt du cours :
 
 ```sh
-quarto add fabrizioalbertetti/quarto_theme_hearc/extension
+quarto add fabrizioalbertetti/quarto_theme_hearc_beamer/extension
 ```
 
 L'extension est installée dans `_extensions/fabrizioalbertetti/theme-hearc/` (à committer avec le
@@ -35,7 +35,7 @@ Pour partir de l'exemple complet, copier aussi les fichiers de départ (`_quarto
 `01-exemple.qmd`) :
 
 ```sh
-quarto use template fabrizioalbertetti/quarto_theme_hearc/example
+quarto use template fabrizioalbertetti/quarto_theme_hearc_beamer/example
 ```
 
 ### Fichiers à ignorer
@@ -69,10 +69,10 @@ copier à la main.
 ### Mise à jour
 
 ```sh
-quarto update extension fabrizioalbertetti/quarto_theme_hearc/extension
+quarto update extension fabrizioalbertetti/quarto_theme_hearc_beamer/extension
 ```
 
-Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_theme_hearc/extension@v2.0.0`.
+Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_theme_hearc_beamer/extension@v2.0.0`.
 
 ## Utilisation
 
