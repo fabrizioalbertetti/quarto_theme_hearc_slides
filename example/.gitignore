@@ -12,12 +12,11 @@
 # Logo copié à côté de chaque .qmd par l'extension au moment du rendu
 # (l'original, dans _extensions/, doit rester committé)
 logo-he-arc-ing.jpg
-!/_extensions/**/logo-he-arc-ing.jpg
 
 # Notebooks intermédiaires (diapositives qui exécutent du code Python)
 **/*.quarto_ipynb
 
 # Sans `output-dir` dans _quarto.yml, les rendus sont écrits à côté des .qmd :
 # décommenter alors les deux lignes suivantes (les PDF restent conservés)
-# *.html
-# *_files/
+*.html
+*_files/
