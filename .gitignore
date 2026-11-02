@@ -16,3 +16,5 @@ logo-he-arc-ing.jpg
 
 # Copie locale de l'extension, installée depuis ../extension (voir README)
 /example/_extensions/
+
+/.luarc.json
