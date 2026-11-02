@@ -1,6 +1,6 @@
-# Extension Quarto : thème de diapositives HE-Arc Ingénierie (beamer + slides reveal.js)
+# Extension Quarto : thème de diapositives HE-Arc Ingénierie (beamer PDF + slides reveal.js)
 
-Extension Quarto pour produire des présentations de cours en slides (beamer + reveal.js), avec un thème
+Extension Quarto pour produire des slides de cours (beamer PDF + reveal.js), avec un thème
 graphique aligné sur le logo HE-Arc Ingénierie (rouge `#FF0000`, noir, fond blanc).
 
 Le format `theme-hearc-revealjs` produit deux fichiers par présentation :
@@ -21,10 +21,10 @@ Le format `theme-hearc-revealjs` produit deux fichiers par présentation :
 Dans le dépôt du cours :
 
 ```sh
-quarto add fabrizioalbertetti/quarto_theme_hearc_beamer/extension
+quarto add fabrizioalbertetti/quarto_theme_hearc_slides/extension
 ```
 
-L'extension est installée dans `_extensions/fabrizioalbertetti/theme-hearc-beamer/` (à committer avec le
+L'extension est installée dans `_extensions/fabrizioalbertetti/theme-hearc-slides/` (à committer avec le
 cours). Utiliser ensuite le format dans `_quarto.yml` ou dans l'en-tête d'un `.qmd` :
 
 ```yaml
@@ -35,7 +35,7 @@ Pour partir de l'exemple complet, copier aussi les fichiers de départ (`_quarto
 `01-exemple.qmd`) :
 
 ```sh
-quarto use template fabrizioalbertetti/quarto_theme_hearc_beamer/example
+quarto use template fabrizioalbertetti/quarto_theme_hearc_slides/example
 ```
 
 ### Fichiers à ignorer
@@ -69,10 +69,10 @@ copier à la main.
 ### Mise à jour
 
 ```sh
-quarto update extension fabrizioalbertetti/quarto_theme_hearc_beamer/extension
+quarto update extension fabrizioalbertetti/quarto_theme_hearc_slides/extension
 ```
 
-Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_theme_hearc_beamer/extension@v2.0.0`.
+Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_theme_hearc_slides/extension@v2.0.0`.
 
 ## Utilisation
 
@@ -181,7 +181,7 @@ quarto render                   # → example/_output/01-exemple.html et .pdf
 
 ## Personnalisation
 
-- **Couleurs, polices, mise en page** : `extension/_extensions/theme-hearc-beamer/hearc-ing.scss`.
+- **Couleurs, polices, mise en page** : `extension/_extensions/theme-hearc-slides/hearc-ing.scss`.
   Pour une modification propre à un cours, éditer la copie installée dans ce cours ;
   pour la partager, la faire dans ce dépôt puis `quarto update` dans les cours.
 - **Autre thème** : `theme: simple` (ou tout thème reveal.js) sous `format: theme-hearc-revealjs:`.
