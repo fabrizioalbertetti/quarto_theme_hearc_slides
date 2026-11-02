@@ -3,7 +3,7 @@
 Extension Quarto pour produire des slides de cours (beamer PDF + reveal.js), avec un thème
 graphique aligné sur le logo HE-Arc Ingénierie (rouge `#FF0000`, noir, fond blanc).
 
-Le format `theme-hearc-revealjs` produit deux fichiers par présentation :
+Le format `theme-hearc-slides-revealjs` produit deux fichiers par présentation :
 
 | Fichier      | Usage                                                                  |
 |--------------|------------------------------------------------------------------------|
@@ -24,11 +24,14 @@ Dans le dépôt du cours :
 quarto add fabrizioalbertetti/quarto_theme_hearc_slides/extension
 ```
 
+Le dépôt GitHub contient aussi l'exemple : `/extension` est donc nécessaire pour
+indiquer à Quarto le dossier de l'extension.
+
 L'extension est installée dans `_extensions/fabrizioalbertetti/theme-hearc-slides/` (à committer avec le
 cours). Utiliser ensuite le format dans `_quarto.yml` ou dans l'en-tête d'un `.qmd` :
 
 ```yaml
-format: theme-hearc-revealjs
+format: theme-hearc-slides-revealjs
 ```
 
 Pour partir de l'exemple complet, copier aussi les fichiers de départ (`_quarto.yml` et
@@ -88,7 +91,7 @@ Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_t
    institute: "HE-Arc Ingénierie"
 
    format:
-     theme-hearc-revealjs: default
+     theme-hearc-slides-revealjs: default
    ```
 
    Toute [option reveal.js de Quarto](https://quarto.org/docs/presentations/revealjs/) peut
@@ -153,8 +156,8 @@ Voir [example/01-exemple.qmd](example/01-exemple.qmd) pour un exemple complet, c
 
 ```
 extension/                   l'extension Quarto (installée par `quarto add`)
-  _extensions/theme-hearc/
-    _extension.yml           format `theme-hearc-revealjs` (16:9, français, export PDF…)
+  _extensions/theme-hearc-slides/
+    _extension.yml           format `theme-hearc-slides-revealjs` (16:9, français, export PDF…)
     hearc-ing.scss           thème (couleurs, polices, titre, pied de page, blocs)
     title-slide.html         page de titre (cours, classe, logo)
     course-meta.lua          transmet `course.*` au thème ; regroupe les titres `###` en blocs
@@ -184,5 +187,5 @@ quarto render                   # → example/_output/01-exemple.html et .pdf
 - **Couleurs, polices, mise en page** : `extension/_extensions/theme-hearc-slides/hearc-ing.scss`.
   Pour une modification propre à un cours, éditer la copie installée dans ce cours ;
   pour la partager, la faire dans ce dépôt puis `quarto update` dans les cours.
-- **Autre thème** : `theme: simple` (ou tout thème reveal.js) sous `format: theme-hearc-revealjs:`.
+- **Autre thème** : `theme: simple` (ou tout thème reveal.js) sous `format: theme-hearc-slides-revealjs:`.
   La page de titre et le pied de page restent ceux de l'extension, mais sans la charte HE-Arc.

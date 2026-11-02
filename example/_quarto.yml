@@ -26,4 +26,4 @@ date-format: "D MMMM YYYY"
 format:
   # Options reveal.js : https://quarto.org/docs/presentations/revealjs/
   # (par ex. `incremental: true` pour rendre toutes les listes progressives)
-  theme-hearc-revealjs: default
+  theme-hearc-slides-revealjs: default

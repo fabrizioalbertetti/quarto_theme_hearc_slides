@@ -10,7 +10,7 @@ contributes:
       post-render:
         - pdf-export.lua
   formats:
-    # theme-hearc-revealjs : présentation HTML (navigateur) aux couleurs HE-Arc
+    # theme-hearc-slides-revealjs : présentation HTML (navigateur) aux couleurs HE-Arc
     revealjs:
       theme: hearc-ing.scss
       template-partials:
