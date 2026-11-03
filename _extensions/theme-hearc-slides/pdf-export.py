@@ -114,6 +114,25 @@ class DevTools:
         self.socket.close()
 
 
+def close_browser(port, process):
+    if process.poll() is None:
+        try:
+            with urllib.request.urlopen(f"http://127.0.0.1:{port}/json/version", timeout=2) as response:
+                address = json.load(response)["webSocketDebuggerUrl"]
+            browser = DevTools(address)
+            try:
+                browser.command("Browser.close")
+            finally:
+                browser.close()
+        except (OSError, KeyError, ValueError, RuntimeError):
+            process.terminate()
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
+
+
 def page_target(port, expected_url, process):
     deadline = time.monotonic() + 30
     while time.monotonic() < deadline:
@@ -196,12 +215,7 @@ def export(browser, html, pdf):
         finally:
             if devtools:
                 devtools.close()
-            process.terminate()
-            try:
-                process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait()
+            close_browser(port, process)
 
 
 def main():
