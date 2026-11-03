@@ -92,27 +92,13 @@ local function is_revealjs(path)
   return head:find("reveal.css", 1, true) ~= nil
 end
 
-local function quote(arg)
-  if windows then
-    return '"' .. arg .. '"'
-  end
-  return "'" .. arg:gsub("'", "'\\''") .. "'"
-end
-
 local function export(browser, python, helper, html)
   local abs = pandoc.path.normalize(pandoc.path.join({ pandoc.system.get_working_directory(), html }))
   local pdf = abs:gsub("%.html$", ".pdf")
   os.remove(pdf)
   -- Le helper attend la fin de la mise en page asynchrone de Reveal.js avant l'impression.
-  local cmd = table.concat({
-    quote(python),
-    quote(helper),
-    quote(browser),
-    quote(abs),
-    quote(pdf),
-  }, " ")
-  local ok, _, code = os.execute(cmd)
-  if ok == true or ok == 0 then
+  local ok, result = pcall(pandoc.pipe, python, { helper, browser, abs, pdf }, "")
+  if ok then
     if not exists(pdf) then
       io.stderr:write("pdf-export : le navigateur n'a pas créé " .. pdf .. "\n")
       return
@@ -120,7 +106,7 @@ local function export(browser, python, helper, html)
     io.stderr:write("Output created: " .. html:gsub("%.html$", ".pdf") .. "\n")
   else
     io.stderr:write("pdf-export : échec de l'export de " .. html
-      .. " (code " .. tostring(code or ok) .. ")\n")
+      .. " : " .. tostring(result) .. "\n")
   end
 end
 
@@ -129,10 +115,22 @@ local function find_python()
   if env and exists(env) then
     return env
   end
-  if not windows then
-    return in_path("python3") or in_path("python")
+  local function resolve(command, args)
+    local ok, path = pcall(pandoc.pipe, command, args, "")
+    if ok then
+      path = path:gsub("[\r\n]+$", "")
+    end
+    if ok and path ~= "" and exists(path) then
+      return path
+    end
+    return nil
   end
-  return "python"
+  if windows then
+    return resolve("py", { "-3", "-c", "import sys; print(sys.executable)" })
+      or resolve("python", { "-c", "import sys; print(sys.executable)" })
+  end
+  return resolve("python3", { "-c", "import sys; print(sys.executable)" })
+    or resolve("python", { "-c", "import sys; print(sys.executable)" })
 end
 
 local files = os.getenv("QUARTO_PROJECT_OUTPUT_FILES")

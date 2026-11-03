@@ -15,8 +15,9 @@ Le format `theme-hearc-slides-revealjs` produit deux fichiers par présentation 
 ## Prérequis
 
 - [Quarto](https://quarto.org) ≥ 1.4
-- Pour l'export PDF : Google Chrome, Chromium ou Microsoft Edge (cherché automatiquement ;
-  sinon, indiquer son chemin dans la variable d'environnement `QUARTO_CHROMIUM`)
+- Pour l'export PDF : Python 3.6+ et Google Chrome, Chromium ou Microsoft Edge (cherché
+  automatiquement ; sinon, indiquer leurs chemins dans les variables d'environnement
+  `QUARTO_PYTHON` et `QUARTO_CHROMIUM`). Sous Windows, le lanceur `py -3` est aussi détecté.
 
 ## Installation
 
