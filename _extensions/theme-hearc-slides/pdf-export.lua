@@ -10,7 +10,8 @@
 -- transmet aucune indication permettant de reconnaître une prévisualisation.
 --
 -- Variables d'environnement :
---   QUARTO_CHROMIUM  chemin du navigateur à utiliser (sinon recherche automatique)
+--   QUARTO_CHROMIUM  chemin du navigateur à utiliser (sinon recherche automatique,
+--                    y compris le navigateur de `quarto install chrome-headless-shell`)
 --   QUARTO_PYTHON    chemin de Python 3 (sinon recherche automatique)
 --   HEARC_NO_PDF=1   ne pas exporter (par ex. pour `quarto preview` du projet entier)
 -- Les chemins de QUARTO_PROJECT_OUTPUT_FILES sont relatifs à la racine du
@@ -41,6 +42,44 @@ local function in_path(name)
   p:close()
   if path and path ~= "" then
     return path
+  end
+  return nil
+end
+
+-- Navigateur installé par Quarto (`quarto install chrome-headless-shell`, ou
+-- l'ancien `quarto install chromium`), dans le répertoire de données de Quarto.
+local function quarto_browser()
+  local dirs = {}
+  if windows then
+    local dir = os.getenv("LOCALAPPDATA")
+    if dir then
+      table.insert(dirs, dir .. "\\quarto")
+    end
+  else
+    local home = os.getenv("HOME") or ""
+    local xdg = os.getenv("XDG_DATA_HOME")
+    table.insert(dirs, (xdg and xdg ~= "" and xdg or home .. "/.local/share") .. "/quarto")
+    table.insert(dirs, home .. "/Library/Application Support/quarto")
+  end
+  for _, base in ipairs(dirs) do
+    for _, tool in ipairs({ "chrome-headless-shell", "chromium" }) do
+      local dir = pandoc.path.join({ base, tool })
+      local cmd
+      if windows then
+        cmd = 'where /r "' .. dir .. '" chrome-headless-shell.exe chrome.exe 2>nul'
+      else
+        cmd = "find '" .. dir .. "' -type f \\( -name chrome-headless-shell -o -name chrome"
+          .. " -o -name Chromium \\) -perm -u+x 2>/dev/null"
+      end
+      local p = io.popen(cmd)
+      if p then
+        local path = p:read("l")
+        p:close()
+        if path and path ~= "" and exists(path) then
+          return path
+        end
+      end
+    end
   end
   return nil
 end
@@ -79,7 +118,7 @@ local function find_browser()
       return path
     end
   end
-  return nil
+  return quarto_browser()
 end
 
 local function is_revealjs(path)
@@ -154,7 +193,8 @@ for file in (files or ""):gmatch("[^\r\n]+") do
     browser = browser or find_browser()
     if not browser then
       io.stderr:write("pdf-export : aucun navigateur Chrome/Chromium/Edge trouvé ;"
-        .. " définir QUARTO_CHROMIUM pour exporter " .. file .. " en PDF\n")
+        .. " installer un navigateur (par ex. `quarto install chrome-headless-shell`)"
+        .. " ou définir QUARTO_CHROMIUM pour exporter " .. file .. " en PDF\n")
       return
     end
     python = python or find_python()
