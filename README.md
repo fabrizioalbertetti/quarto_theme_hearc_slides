@@ -9,8 +9,11 @@ Le format `theme-hearc-slides-revealjs` produit deux fichiers par présentation 
 
 | Fichier      | Usage                                                                  |
 |--------------|------------------------------------------------------------------------|
-| `cours.html` | projection dans un navigateur, avec animations et notes de l'orateur (touche `S`) |
+| `cours.html` | projection dans un navigateur, avec animations et notes de l'orateur (touche `S`) ; servi par `quarto preview` |
 | `cours.pdf`  | à distribuer : une page par diapositive, dans l'état final de ses animations, sans les notes (exporté automatiquement) |
+
+Après l'export du PDF, `quarto render` supprime les fichiers intermédiaires `cours.html`
+et `cours_files/` (voir plus bas).
 
 ## Prérequis
 
@@ -120,8 +123,8 @@ Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_t
 3. Générer les présentations :
 
    ```sh
-   quarto render                   # toutes les présentations → _output/ (HTML + PDF)
-   quarto render 03-heritage.qmd   # une seule (HTML + PDF)
+   quarto render                   # toutes les présentations → _output/ (PDF)
+   quarto render 03-heritage.qmd   # une seule (PDF)
    quarto preview 03-heritage.qmd  # rendu automatique à chaque sauvegarde (HTML seul)
    ```
 
@@ -137,6 +140,18 @@ Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_t
    sans indiquer s'il s'agit d'une prévisualisation. Pour éviter l'export au démarrage de
    `quarto preview`, préférer `quarto preview cours.qmd`, ou définir la variable
    d'environnement `HEARC_NO_PDF=1` (par ex. `HEARC_NO_PDF=1 quarto preview`).
+
+   Une fois le PDF exporté, `cours.html` et `cours_files/` sont supprimés, sauf :
+
+   - pendant un `quarto preview` du projet entier (détecté par son verrou
+     `.quarto/preview/lock`) : le HTML reste servi au navigateur ;
+   - si l'export PDF a échoué ou est désactivé (`HEARC_NO_PDF=1`) ;
+   - si la variable d'environnement `HEARC_KEEP_HTML=1` est définie (par ex. pour
+     projeter `cours.html` sans passer par `quarto preview`).
+
+   `quarto preview cours.qmd` n'exécute pas le script et n'est donc pas concerné ;
+   un `quarto render` lancé pendant ce preview supprime toutefois le HTML servi,
+   regénéré à la sauvegarde suivante du `.qmd`.
 
 Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `date`, `author`).
 
@@ -189,7 +204,7 @@ Après chaque modification dans `extension/`, la réinstaller puis regénérer l
 ```sh
 cd example
 quarto add ../extension --no-prompt
-quarto render                   # → example/_output/01-exemple.html et .pdf
+quarto render                   # → example/_output/01-exemple.pdf
 ```
 
 Les fichiers `images/*.drawio.svg` conservent le rendu SVG et contiennent aussi

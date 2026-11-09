@@ -19,7 +19,8 @@ date-format: "D MMMM YYYY"
 
 # Chaque présentation produit deux fichiers dans _output/ :
 #   01-exemple.html  à projeter depuis un navigateur (touche S : notes de l'orateur,
-#                    F : plein écran)
+#                    F : plein écran) ; supprimé par `quarto render` après l'export
+#                    du PDF (conservé par `quarto preview` ou avec HEARC_KEEP_HTML=1)
 #   01-exemple.pdf   à distribuer : une page par diapositive, état final des
 #                    animations, sans les notes (exporté par `quarto render` ;
 #                    pas par `quarto preview 01-exemple.qmd`, voir README)
