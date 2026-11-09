@@ -17,6 +17,8 @@ contributes:
         - title-slide.html
       filters:
         - course-meta.lua
+        # schémas draw.io animés (propriétés fragment / fragment-out)
+        - drawio-fragments.lua
       slide-level: 2
       lang: fr
       highlight-style: github
@@ -32,5 +34,8 @@ contributes:
       pdf-separate-fragments: false
       include-after-body:
         - pdf-print.html
+      # animations paragraphe par paragraphe : []{.frag fragment-index=n}
+      revealjs-plugins:
+        - frag
       format-resources:
         - logo-he-arc-ing.jpg

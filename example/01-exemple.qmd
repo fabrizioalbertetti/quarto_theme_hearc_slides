@@ -162,6 +162,47 @@ Le PDF ne garde que l'état final de chaque diapositive (ici l'image 3).
 Faire deviner aux étudiants où vont se déplacer les centroïdes avant l'étape 3.
 :::
 
+## Animation paragraphe par paragraphe
+
+<!--
+Comme dans PowerPoint : un marqueur vide []{.frag ...} en tête d'un
+paragraphe ou d'un élément de liste anime tout le paragraphe (ou l'élément,
+avec ses sous-éléments) :
+- []{.frag fragment-index=2}               apparaît à l'étape 2 ;
+- []{.frag out-index=3}                    disparaît à l'étape 3 ;
+- []{.frag fragment-index=1 out-index=3}   visible aux étapes 1 et 2.
+Sans marqueur, l'élément est visible dès le début.
+-->
+
+Étapes d'un projet d'apprentissage automatique :
+
+- collecter les données ;
+- []{.frag out-index=3} *(nettoyage : voir chapitre 2)*
+- []{.frag fragment-index=1} choisir un modèle ;
+  - linéaire, arbre, réseau de neurones…
+- []{.frag fragment-index=2} l'entraîner, puis l'évaluer sur le jeu de test.
+
+[]{.frag fragment-index=1 out-index=3} Conseil : commencer par le modèle le plus simple.
+
+[]{.frag fragment-index=3} **Itérer** tant que le résultat n'est pas satisfaisant.
+
+## Schéma draw.io animé
+
+<!--
+Schéma draw.io dont les formes apparaissent une à une. Dans draw.io, sur une
+forme ou un groupe : Édition > Modifier les données (Ctrl+M), ajouter la
+propriété `fragment` (étape d'apparition) et/ou `fragment-out` (étape de
+disparition). Exporter ensuite en SVG avec « Inclure une copie du diagramme »
+et les métadonnées, par exemple en ligne de commande :
+  draw.io -x -f svg -e --embed-svg-metadata -o images/pipeline.drawio.svg images/src/pipeline.drawio
+Le nom du fichier doit se terminer par .drawio.svg. Les étapes sont communes
+avec les fragments du texte de la diapositive.
+-->
+
+![](images/pipeline.drawio.svg){width=90%}
+
+[]{.frag fragment-index=3} Le modèle entraîné **prédit** la sortie d'une donnée jamais vue.
+
 # Mise en pratique
 
 ## Code source

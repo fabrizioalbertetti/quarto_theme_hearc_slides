@@ -11,6 +11,7 @@
 --
 -- Variables d'environnement :
 --   QUARTO_CHROMIUM  chemin du navigateur à utiliser (sinon recherche automatique)
+--   QUARTO_PYTHON    chemin de Python 3 (sinon recherche automatique)
 --   HEARC_NO_PDF=1   ne pas exporter (par ex. pour `quarto preview` du projet entier)
 -- Les chemins de QUARTO_PROJECT_OUTPUT_FILES sont relatifs à la racine du
 -- projet, qui est le répertoire courant lors de l'exécution du script.
@@ -91,56 +92,45 @@ local function is_revealjs(path)
   return head:find("reveal.css", 1, true) ~= nil
 end
 
--- Chemin absolu -> URL file:// (espaces et caractères accentués encodés)
-local function file_url(path)
-  path = path:gsub("\\", "/")
-  if not path:match("^/") then
-    path = "/" .. path
-  end
-  return "file://" .. path:gsub("[^%w/:._~-]", function(c)
-    return string.format("%%%02X", c:byte())
-  end)
-end
-
-local function quote(arg)
-  if windows then
-    return '"' .. arg .. '"'
-  end
-  return "'" .. arg:gsub("'", "'\\''") .. "'"
-end
-
-local function export(browser, html)
+local function export(browser, python, helper, html)
   local abs = pandoc.path.normalize(pandoc.path.join({ pandoc.system.get_working_directory(), html }))
   local pdf = abs:gsub("%.html$", ".pdf")
   os.remove(pdf)
-  pandoc.system.with_temporary_directory("hearc-pdf", function(profile)
-    local cmd = table.concat({
-      quote(browser),
-      "--headless",
-      "--disable-gpu",
-      "--no-first-run",
-      "--no-pdf-header-footer",
-      -- Sans ce drapeau, le budget de temps virtuel donne parfois une page
-      -- blanche (Chrome 156) ; sans le budget, Chrome imprimerait avant la
-      -- fin de la mise en page de reveal.js
-      "--run-all-compositor-stages-before-draw",
-      "--virtual-time-budget=20000",
-      quote("--user-data-dir=" .. profile),
-      quote("--print-to-pdf=" .. pdf),
-      quote(file_url(abs) .. "?print-pdf"),
-    }, " ")
-    if windows then
-      cmd = '"' .. cmd .. '" >NUL 2>&1'  -- cmd.exe retire les guillemets externes
-    else
-      cmd = cmd .. " >/dev/null 2>&1"
+  -- Le helper attend la fin de la mise en page asynchrone de Reveal.js avant l'impression.
+  local ok, result = pcall(pandoc.pipe, python, { helper, browser, abs, pdf }, "")
+  if ok then
+    if not exists(pdf) then
+      io.stderr:write("pdf-export : le navigateur n'a pas créé " .. pdf .. "\n")
+      return
     end
-    os.execute(cmd)
-  end)
-  if exists(pdf) then
     io.stderr:write("Output created: " .. html:gsub("%.html$", ".pdf") .. "\n")
   else
-    io.stderr:write("pdf-export : échec de l'export de " .. html .. "\n")
+    io.stderr:write("pdf-export : échec de l'export de " .. html
+      .. " : " .. tostring(result) .. "\n")
   end
+end
+
+local function find_python()
+  local env = os.getenv("QUARTO_PYTHON")
+  if env and exists(env) then
+    return env
+  end
+  local function resolve(command, args)
+    local ok, path = pcall(pandoc.pipe, command, args, "")
+    if ok then
+      path = path:gsub("[\r\n]+$", "")
+    end
+    if ok and path ~= "" and exists(path) then
+      return path
+    end
+    return nil
+  end
+  if windows then
+    return resolve("py", { "-3", "-c", "import sys; print(sys.executable)" })
+      or resolve("python", { "-c", "import sys; print(sys.executable)" })
+  end
+  return resolve("python3", { "-c", "import sys; print(sys.executable)" })
+    or resolve("python", { "-c", "import sys; print(sys.executable)" })
 end
 
 local files = os.getenv("QUARTO_PROJECT_OUTPUT_FILES")
@@ -154,6 +144,11 @@ if not files and list_file then
 end
 
 local browser = nil
+local python = nil
+local helper = pandoc.path.join({
+  pandoc.system.get_working_directory(),
+  "_extensions/fabrizioalbertetti/theme-hearc-slides/pdf-export.py",
+})
 for file in (files or ""):gmatch("[^\r\n]+") do
   if file:match("%.html$") and is_revealjs(file) then
     browser = browser or find_browser()
@@ -162,6 +157,12 @@ for file in (files or ""):gmatch("[^\r\n]+") do
         .. " définir QUARTO_CHROMIUM pour exporter " .. file .. " en PDF\n")
       return
     end
-    export(browser, file)
+    python = python or find_python()
+    if not python then
+      io.stderr:write("pdf-export : Python 3 est requis pour attendre la mise en page"
+        .. " de Reveal.js ; définir QUARTO_PYTHON pour exporter " .. file .. " en PDF\n")
+      return
+    end
+    export(browser, python, helper, file)
   end
 end

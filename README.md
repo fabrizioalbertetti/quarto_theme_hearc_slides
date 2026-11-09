@@ -149,6 +149,8 @@ Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `dat
 | Liste progressive     | `::: incremental` … `:::`                       |
 | Colonnes              | `:::: columns` + `::: {.column width="50%"}`    |
 | Animation             | `{.fragment}`, `{.fragment .fade-out}`, `::: r-stack` (images superposées) |
+| Animation d'un paragraphe / élément de liste | marqueur en tête : `[]{.frag fragment-index=2}` (apparaît), `[]{.frag out-index=3}` (disparaît), ou les deux |
+| Schéma draw.io animé  | `![](images/schema.drawio.svg)` ; propriétés `fragment` / `fragment-out` sur les formes (voir ci-dessous) |
 | Contenu trop long     | `## Titre {.scrollable}` (défilement ; réduit pour tenir sur une page dans le PDF), `{.smaller}` |
 | Notes de l'orateur    | `::: notes` … `:::` (touche `S`, jamais dans le PDF) |
 | Image                 | `![légende](images/schema.svg){width=80%}` (SVG, PNG ou JPG) |
@@ -166,6 +168,8 @@ extension/                   l'extension Quarto (installée par `quarto add`)
     course-meta.lua          transmet `course.*` au thème ; regroupe les titres `###` en blocs
     pdf-export.lua           après le rendu, exporte `cours.html` en `cours.pdf` (navigateur sans interface)
     pdf-print.html           ajustements du mode impression (diapositives défilantes, pied de page)
+    frag/                    plugin reveal.js : animations paragraphe par paragraphe (`[]{.frag ...}`)
+    drawio-fragments.lua     insère les schémas `.drawio.svg` animés dans la page
     logo-he-arc-ing.jpg      logo de la page de titre
 example/                     projet Quarto d'exemple qui utilise l'extension
   _quarto.yml                paramètres communs du cours
@@ -194,6 +198,20 @@ générer ou mettre à jour ces versions avec :
 ```powershell
 pwsh -File images/src/build-drawio.ps1
 ```
+
+### Schémas draw.io animés
+
+Dans draw.io, sélectionner une forme (ou un groupe), *Édition > Modifier les données*
+(`Ctrl+M`) et ajouter la propriété `fragment` (étape d'apparition) et/ou
+`fragment-out` (étape de disparition). Les étapes sont communes avec les
+`fragment-index` du texte de la diapositive. Exporter en SVG avec la copie du
+diagramme et les métadonnées des cellules, dans un fichier `*.drawio.svg` :
+
+```sh
+draw.io -x -f svg -e --embed-svg-metadata -o images/pipeline.drawio.svg images/src/pipeline.drawio
+```
+
+Exemple : `example/images/src/pipeline.drawio`, diapositive « Schéma draw.io animé ».
 
 ## Personnalisation
 
