@@ -174,6 +174,43 @@ Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `dat
 
 Voir [example/01-exemple.qmd](example/01-exemple.qmd) pour un exemple complet, commenté.
 
+## Styles disponibles
+
+En plus de la charte (titres, listes, blocs, pied de page), `hearc-ing.scss` fournit des
+classes à appliquer dans les `.qmd`. Les styles réutilisables vont dans ce fichier plutôt
+que dans un bloc `<style>` d'un `.qmd`.
+
+| Classe | Effet | Exemple |
+|--------|-------|---------|
+| `.swap-out` / `.swap-in` | texte remplacé sur place à une étape, sans espace vide | `[ancien]{.fragment .fade-out .swap-out fragment-index=1}[nouveau]{.fragment .swap-in fragment-index=1}` |
+| `.flex` | colonnes en flex, toujours côte à côte | `:::: {.columns .flex}` |
+| `.stack-top-left` | `r-stack` aligné en haut à gauche (étapes de texte superposées) | `::: {.r-stack .stack-top-left}` |
+| `.code-full` | bloc de code sans hauteur maximale (pas de défilement) | `::: {.code-full style="font-size:0.8em"}` |
+| `.multiply` | le blanc de l'image devient transparent (texte visible dessous) | `![](schema.svg){.absolute .multiply left=75 top=113 width=1032}` |
+| `.crop` | image recadrée (taille et marges en `style`) | `::: {.crop style="width:12em;height:6em"}` |
+| `.hbar` | barre horizontale (histogramme dans un tableau) | `[]{.hbar style="width:3em;background:#00CC00"}` |
+| `.seclabel` | étiquette de section, coin supérieur droit | `::: seclabel` |
+| `.defbox` | définition encadrée en bleu | `::: defbox` |
+| `.exo` | exercice, fond bleu clair | `::: exo` |
+| `.bandeau` | texte blanc sur fond bleu, sous un schéma | `::: {.fragment .bandeau}` |
+| `.plain` | tableau sans bordures | `::: plain` autour du tableau |
+| `.ttable` | table de transition : 1re ligne et 1re colonne sur fond bleu | `::: ttable` autour du tableau |
+
+Diapositives reprises de PowerPoint, positionnées en px (diapositive 1280×720) :
+
+| Classe | Effet |
+|--------|-------|
+| `.ppt-abs` | bloc positionné (avec `.absolute`), images en fusion `multiply` ; variantes `.trace` (trace en liste), `.drv` / `.drv-leaf` (dérivation), `.gram` (grammaire à chasse fixe) ; `.red` pour du texte rouge |
+| `.pptcode` | code positionné (avec `.absolute`), police Courier ; taille, interligne et espacement des paragraphes réglables en `style` : `--fs`, `--lh`, `--gap` ; `.boxed` ajoute un cadre |
+| `.cwrap` / `.ccode` | code superposé à un schéma : le schéma occupe toute la largeur de `.cwrap`, chaque `.ccode` est positionné en `style` |
+
+Les blocs de lignes (`| ligne`) ont des marges réduites (0.2em).
+
+Pour ajouter un style : le placer dans la section « Classes utilitaires » de `hearc-ing.scss`,
+préfixé par `.reveal .slides` (et non `.reveal` seul). Quarto ajoute en effet dans le
+`<head>`, après le thème, des règles de même spécificité (par ex. `.reveal .slide ul`) qui
+l'emporteraient sinon.
+
 ## Structure du dépôt
 
 ```
