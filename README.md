@@ -171,8 +171,48 @@ Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `dat
 | Contenu trop long     | `## Titre {.scrollable}` (défilement ; réduit pour tenir sur une page dans le PDF), `{.smaller}` |
 | Notes de l'orateur    | `::: notes` … `:::` (touche `S`, jamais dans le PDF) |
 | Image                 | `![légende](images/schema.svg){width=80%}` (SVG, PNG ou JPG) |
+| Source d'une image, d'une définition, d'une citation | attribut `source="…"`, voir « Citer les sources » |
 
 Voir [example/01-exemple.qmd](example/01-exemple.qmd) pour un exemple complet, commenté.
+
+## Citer les sources
+
+Une image, un schéma, une définition ou une citation repris d'un tiers indique sa source
+avec l'attribut `source` (texte Markdown), complété au besoin par :
+
+| Attribut       | Rôle                                                        | Exemple |
+|----------------|-------------------------------------------------------------|---------|
+| `source`       | auteur, site, ouvrage (obligatoire)                         | `source="Wikipédia"` |
+| `source-url`   | lien placé sur le texte de la source                        | `source-url="https://fr.wikipedia.org/wiki/Compilateur"` |
+| `license`      | licence de l'œuvre reprise (obligatoire pour CC BY, CC BY-SA) | `license="CC BY-SA 4.0"` |
+| `source-label` | remplace « Source » : `D'après` pour une image redessinée ou modifiée | `source-label="D'après"` |
+
+```markdown
+![](images/pipeline.png){width=70% source="Databricks" source-url="https://www.databricks.com/blog/…"}
+
+::: {.defbox source="Wikipédia" source-url="https://fr.wikipedia.org/wiki/Compilateur" license="CC BY-SA 4.0"}
+Un **compilateur** est un programme qui transforme un code source en un code objet.
+:::
+
+### Définition {source="Aho et al., *Compilers*, 2006"}
+
+## Architecture de Spark {source="Documentation Apache Spark"}
+```
+
+Rendu :
+
+- **image** ou **titre `##`** : une ligne « Source : … » en petit, en bas à droite de la
+  diapositive (sources regroupées et dédoublonnées : « Sources : A ; B ») ;
+- **bloc** `:::` ou `###` : dernière ligne du bloc, alignée à droite.
+
+Pour placer la source ailleurs, l'écrire à la main avec le même style :
+`[Source : …]{.source}`.
+
+À citer : tout contenu repris tel quel ou adapté (image d'un site, d'un livre, d'une
+documentation, de Wikimedia ; définition ou phrase copiée). Inutile pour un schéma ou un
+texte original, une capture d'écran de son propre code, un logo de produit.
+Wikipédia et Wikimedia Commons sont généralement sous CC BY-SA : indiquer l'auteur ou
+« Wikipédia » et la licence.
 
 ## Styles disponibles
 
@@ -220,6 +260,7 @@ extension/                   l'extension Quarto (installée par `quarto add`)
     hearc-ing.scss           thème (couleurs, polices, titre, pied de page, blocs)
     title-slide.html         page de titre (cours, classe, logo)
     course-meta.lua          transmet `course.*` au thème ; regroupe les titres `###` en blocs
+    sources.lua              sources des images et des blocs (attribut `source="…"`)
     pdf-export.lua           après le rendu, exporte `cours.html` en `cours.pdf` (navigateur sans interface)
     pdf-print.html           ajustements du mode impression (diapositives défilantes, pied de page)
     frag/                    plugin reveal.js : animations paragraphe par paragraphe (`[]{.frag ...}`)

@@ -79,7 +79,9 @@ local function Blocks(blocks)
       -- Titre en paragraphe : un Div commençant par un titre deviendrait une
       -- <section>, que reveal.js prendrait pour une diapositive imbriquée
       local title = pandoc.Div({ pandoc.Plain(el.content) }, { class = "hearc-block-title" })
-      block = pandoc.Div({ title }, { class = table.concat(classes, " ") })
+      -- attributs du titre conservés (par ex. source="…", voir sources.lua)
+      local attr = pandoc.Attr("", { table.unpack(classes) }, el.attributes)
+      block = pandoc.Div({ title }, attr)
     elseif block then
       block.content:insert(el)
     else

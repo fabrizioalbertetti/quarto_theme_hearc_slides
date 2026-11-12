@@ -19,6 +19,9 @@ contributes:
         - course-meta.lua
         # schémas draw.io animés (propriétés fragment / fragment-out)
         - drawio-fragments.lua
+        # sources des images et des blocs (attribut source="…"), après
+        # course-meta.lua qui crée les blocs « ### »
+        - sources.lua
       slide-level: 2
       lang: fr
       highlight-style: github

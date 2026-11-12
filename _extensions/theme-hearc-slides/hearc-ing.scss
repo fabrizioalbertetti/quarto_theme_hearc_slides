@@ -309,6 +309,45 @@ $code-block-border-color: $hearc-light;
   margin: 0;
 }
 
+// Sources (voir sources.lua) : attribut source="…" sur une image ou un titre
+// « ## » -> ligne en bas de la diapositive (.source-slide) ; sur un bloc
+// « ::: » ou « ### » -> dernière ligne du bloc (.source-block). Utilisable à la
+// main : [Source : …]{.source}
+.reveal .slides .source {
+  font-size: 0.45em;
+  font-style: normal;
+  color: $hearc-gray;
+  a {
+    color: $hearc-gray;
+    text-decoration: underline;
+  }
+  p {
+    margin: 0;
+  }
+}
+// Source d'une image animée : masquée tant que l'élément animé (numéroté par
+// sources.lua) n'est pas visible
+@for $i from 1 through 20 {
+  .reveal .slides section:has([data-source-ref="#{$i}"].fragment:not(.visible)) .source-slide [data-source="#{$i}"] {
+    visibility: hidden;
+  }
+}
+.reveal .slides div.source-block {
+  margin-top: 0.3em;
+  text-align: right;
+}
+// Une <section> n'a que la hauteur de son contenu : position depuis le haut,
+// en px de la diapositive (720 px de haut), juste au-dessus du pied de page
+.reveal .slides section .source-slide {
+  position: absolute;
+  top: 672px;
+  right: 0;
+  max-width: 80%;
+  margin: 0;
+  text-align: right;
+  line-height: 1.2;
+}
+
 // Encadrés : définition (cadre bleu), exercice (fond bleu clair),
 // bandeau (texte blanc sur fond bleu, sous un schéma)
 .reveal .slides .defbox {

@@ -246,6 +246,35 @@ toujours évaluer sur des données de test.
 
 Prédire si un courriel est un pourriel à partir de son contenu.
 
+## Citer ses sources
+
+<!--
+Une image, une définition ou une citation reprise d'un tiers indique sa
+source avec l'attribut `source` (Markdown accepté), et au besoin :
+`source-url` (lien), `license` (licence), `source-label` (remplace « Source »,
+par ex. « D'après » pour une image redessinée ou modifiée).
+- image ou titre « ## » : ligne en bas de la diapositive (une par diapositive) ;
+- bloc « ::: » ou « ### » : dernière ligne du bloc, à droite.
+Une image ou un texte original (fait par l'enseignant) n'a pas de source.
+-->
+
+:::: columns
+::: {.column width="55%"}
+::: {.defbox source="Wikipédia" source-url="https://fr.wikipedia.org/wiki/Apprentissage_automatique" license="CC BY-SA 4.0"}
+L'**apprentissage automatique** est un champ d'étude de l'intelligence
+artificielle qui se fonde sur des approches mathématiques et statistiques
+pour donner aux ordinateurs la capacité d'« apprendre » à partir de données.
+:::
+
+### Citation {source="A. Samuel, 1959"}
+
+> « Field of study that gives computers the ability to learn without being explicitly programmed. »
+:::
+
+::: {.column width="45%"}
+![](images/kmeans-2.svg){source="Bishop, *Pattern Recognition and Machine Learning*, 2006" source-label="D'après"}
+:::
+::::
 ## Formule et tableau
 
 :::: columns
