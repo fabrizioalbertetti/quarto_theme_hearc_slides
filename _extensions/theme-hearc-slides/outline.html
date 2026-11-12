@@ -1,0 +1,12 @@
+<script>
+// Plan du cours (outline.lua) : Quarto centre verticalement les pages de
+// section (classe « center ») ; la page de plan est disposée comme une
+// diapositive ordinaire, à l'écran comme dans le PDF.
+(function () {
+  var slides = document.querySelectorAll(".reveal .slides section.hearc-outline.center");
+  Array.prototype.forEach.call(slides, function (s) { s.classList.remove("center"); });
+  if (slides.length && window.Reveal && Reveal.isReady && Reveal.isReady()) {
+    Reveal.layout();
+  }
+})();
+</script>

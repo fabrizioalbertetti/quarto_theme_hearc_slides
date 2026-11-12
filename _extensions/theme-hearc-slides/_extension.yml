@@ -16,6 +16,8 @@ contributes:
       template-partials:
         - title-slide.html
       filters:
+        # plan du cours à chaque section « # » (avant course-meta.lua)
+        - outline.lua
         - course-meta.lua
         # schémas draw.io animés (propriétés fragment / fragment-out)
         - drawio-fragments.lua
@@ -36,6 +38,7 @@ contributes:
       # PDF : une page par diapositive, dans l'état final de ses animations
       pdf-separate-fragments: false
       include-after-body:
+        - outline.html
         - pdf-print.html
       # animations paragraphe par paragraphe : []{.frag fragment-index=n}
       revealjs-plugins:

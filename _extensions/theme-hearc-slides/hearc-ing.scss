@@ -107,6 +107,55 @@ $code-block-border-color: $hearc-light;
   }
 }
 
+// Plan du cours (outline.lua) : la page de section « # » affiche le plan,
+// disposé comme une diapositive ordinaire (outline.html) ; le titre « # »
+// reste dans la page (navigation, menu) mais n'est pas affiché
+.reveal .slides section.hearc-outline {
+  > h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+.reveal .slides .hearc-outline-list {
+  text-align: left;
+  .outline-title {
+    margin-bottom: 0.6em;
+    font-size: $presentation-h2-font-size;
+    font-weight: $presentation-heading-font-weight;
+    line-height: 1.2;
+    &::before {
+      @include hearc-bar(1.15em);
+    }
+  }
+  ol {
+    margin-left: 1.6em;
+    > li {
+      margin: 0.35em 0;
+      color: $hearc-gray;
+      &::marker {
+        color: $hearc-gray;
+      }
+      &:has(> .outline-current) {
+        color: $hearc-black;
+        font-weight: 700;
+        &::marker {
+          color: $hearc-red;
+        }
+      }
+    }
+  }
+  .outline-current {
+    padding: 0 0.3em;
+    margin-left: -0.3em;
+    border-radius: 0.2em;
+    background: $hearc-light;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Listes : puces rondes rouges, sous-puces cerclées
 // ---------------------------------------------------------------------------
@@ -328,7 +377,7 @@ $code-block-border-color: $hearc-light;
 // Source d'une image animée : masquée tant que l'élément animé (numéroté par
 // sources.lua) n'est pas visible
 @for $i from 1 through 20 {
-  .reveal .slides section:has([data-source-ref="#{$i}"].fragment:not(.visible)) .source-slide [data-source="#{$i}"] {
+  .reveal .slides section.slide:has([data-source-ref="#{$i}"].fragment:not(.visible)) .source-slide [data-source="#{$i}"] {
     visibility: hidden;
   }
 }

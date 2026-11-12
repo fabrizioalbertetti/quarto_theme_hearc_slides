@@ -159,7 +159,7 @@ Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `dat
 
 | Élément               | Syntaxe                                         |
 |-----------------------|-------------------------------------------------|
-| Page de section       | `# Titre`                                       |
+| Section (plan du cours) | `# Titre` : diapositive « Plan », section en cours mise en évidence (voir « Plan du cours ») |
 | Diapositive           | `## Titre`                                      |
 | Bloc / alerte / exemple | `### Titre`, `### Titre {.alert}`, `### Titre {.example}` |
 | Pause                 | `. . .`                                         |
@@ -174,6 +174,36 @@ Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `dat
 | Source d'une image, d'une définition, d'une citation | attribut `source="…"`, voir « Citer les sources » |
 
 Voir [example/01-exemple.qmd](example/01-exemple.qmd) pour un exemple complet, commenté.
+
+## Plan du cours
+
+Chaque titre `#` est une **section** du cours. Au début de chaque section, la
+diapositive de section affiche le **plan** : la liste numérotée de toutes les sections de
+la présentation, la section qui commence étant mise en évidence (les autres en gris). Les
+sections ne sont écrites qu'une fois, dans les titres `#` ; ne pas écrire de diapositive
+« Plan » à la main.
+
+```markdown
+# Introduction          ← diapositive « Plan » : 1. Introduction (en évidence), 2. …, 3. …
+
+## Première diapositive
+
+# Analyse lexicale      ← diapositive « Plan » : 2. Analyse lexicale en évidence
+```
+
+Le plan n'apparaît qu'à partir de 2 sections. Options, dans l'en-tête du `.qmd` ou dans
+`_quarto.yml` :
+
+```yaml
+outline: false           # pas de plan dans cette présentation
+outline:
+  title: "Plan du cours" # titre des diapositives de plan (défaut : « Plan »)
+  label: true            # rappel « 2) Section » en haut à droite de chaque diapositive
+  min: 3                 # nombre minimal de sections pour afficher le plan (défaut : 2)
+```
+
+Une section hors plan (par ex. un TP ou « Questions ? » en fin de cours) :
+`# Questions ? {.unlisted}` ; elle garde la page de section habituelle.
 
 ## Citer les sources
 
@@ -259,6 +289,7 @@ extension/                   l'extension Quarto (installée par `quarto add`)
     _extension.yml           format `theme-hearc-slides-revealjs` (16:9, français, export PDF…)
     hearc-ing.scss           thème (couleurs, polices, titre, pied de page, blocs)
     title-slide.html         page de titre (cours, classe, logo)
+    outline.lua              plan du cours sur chaque page de section `#`
     course-meta.lua          transmet `course.*` au thème ; regroupe les titres `###` en blocs
     sources.lua              sources des images et des blocs (attribut `source="…"`)
     pdf-export.lua           après le rendu, exporte `cours.html` en `cours.pdf` (navigateur sans interface)
