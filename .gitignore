@@ -19,3 +19,4 @@ logo-he-arc-ing.jpg
 # /example/_extensions/
 
 /.luarc.json
+.DS_Store
