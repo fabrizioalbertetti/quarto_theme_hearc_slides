@@ -10,15 +10,16 @@
 -- transmet aucune indication permettant de reconnaître une prévisualisation,
 -- mais `quarto preview` du projet crée « .quarto/preview/lock » avant son rendu.
 --
--- Une fois le PDF créé, « cours.html » et « cours_files/ » sont supprimés, sauf
--- si un `quarto preview` du projet est en cours (il sert ce HTML).
+-- « cours.html » et « cours_files/ » sont conservés (projection dans un navigateur).
+-- Avec HEARC_REMOVE_HTML=1, ils sont supprimés une fois le PDF créé, sauf si un
+-- `quarto preview` du projet est en cours (il sert ce HTML).
 --
 -- Variables d'environnement :
 --   QUARTO_CHROMIUM  chemin du navigateur à utiliser (sinon recherche automatique,
 --                    y compris le navigateur de `quarto install chrome-headless-shell`)
 --   QUARTO_PYTHON    chemin de Python 3 (sinon recherche automatique)
 --   HEARC_NO_PDF=1   ne pas exporter (par ex. pour `quarto preview` du projet entier)
---   HEARC_KEEP_HTML=1  conserver « cours.html » et « cours_files/ » après l'export
+--   HEARC_REMOVE_HTML=1  supprimer « cours.html » et « cours_files/ » après l'export
 -- Les chemins de QUARTO_PROJECT_OUTPUT_FILES sont relatifs à la racine du
 -- projet, qui est le répertoire courant lors de l'exécution du script.
 
@@ -188,7 +189,7 @@ local function preview_running()
 end
 
 -- Supprime « cours.html » et « cours_files/ » (bibliothèques reveal.js, figures),
--- inutiles une fois le PDF exporté.
+-- sur demande (HEARC_REMOVE_HTML=1) une fois le PDF exporté.
 local function remove_html(html)
   os.remove(html)
   local files_dir = html:gsub("%.html$", "_files")
@@ -256,7 +257,7 @@ for file in (files or ""):gmatch("[^\r\n]+") do
   end
 end
 
-if #exported > 0 and os.getenv("HEARC_KEEP_HTML") ~= "1" and not preview_running() then
+if #exported > 0 and os.getenv("HEARC_REMOVE_HTML") == "1" and not preview_running() then
   for _, file in ipairs(exported) do
     remove_html(file)
   end

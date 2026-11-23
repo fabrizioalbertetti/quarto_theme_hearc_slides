@@ -12,8 +12,8 @@ Le format `theme-hearc-slides-revealjs` produit deux fichiers par présentation 
 | `cours.html` | projection dans un navigateur, avec animations et notes de l'orateur (touche `S`) ; servi par `quarto preview` |
 | `cours.pdf`  | à distribuer : une page par diapositive, dans l'état final de ses animations, sans les notes (exporté automatiquement) |
 
-Après l'export du PDF, `quarto render` supprime les fichiers intermédiaires `cours.html`
-et `cours_files/` (voir plus bas).
+Les deux sont conservés après `quarto render` ; `HEARC_REMOVE_HTML=1` supprime `cours.html`
+et `cours_files/` après l'export du PDF (voir plus bas).
 
 ## Prérequis
 
@@ -141,17 +141,14 @@ Pour figer une version, ajouter un tag : `quarto add fabrizioalbertetti/quarto_t
    `quarto preview`, préférer `quarto preview cours.qmd`, ou définir la variable
    d'environnement `HEARC_NO_PDF=1` (par ex. `HEARC_NO_PDF=1 quarto preview`).
 
-   Une fois le PDF exporté, `cours.html` et `cours_files/` sont supprimés, sauf :
+   `cours.html` et `cours_files/` sont conservés après l'export. Pour ne garder que le
+   PDF, définir la variable d'environnement `HEARC_REMOVE_HTML=1`
+   (par ex. `HEARC_REMOVE_HTML=1 quarto render`) : le HTML est alors supprimé une fois
+   le PDF exporté, sauf :
 
    - pendant un `quarto preview` du projet entier (détecté par son verrou
      `.quarto/preview/lock`) : le HTML reste servi au navigateur ;
-   - si l'export PDF a échoué ou est désactivé (`HEARC_NO_PDF=1`) ;
-   - si la variable d'environnement `HEARC_KEEP_HTML=1` est définie (par ex. pour
-     projeter `cours.html` sans passer par `quarto preview`).
-
-   `quarto preview cours.qmd` n'exécute pas le script et n'est donc pas concerné ;
-   un `quarto render` lancé pendant ce preview supprime toutefois le HTML servi,
-   regénéré à la sauvegarde suivante du `.qmd`.
+   - si l'export PDF a échoué ou est désactivé (`HEARC_NO_PDF=1`).
 
 Toute clé définie dans un `.qmd` remplace celle de `_quarto.yml` (par ex. `date`, `author`).
 
